@@ -62,10 +62,10 @@
   .excl .price-item span { color:rgba(255,255,255,0.4); }
   .excl-sep { border:none; border-top:0.5px solid rgba(255,255,255,0.08); margin:9px 0; }
 
-  .stop-label { font-family:'Inter', sans-serif; background:rgba(6,6,6,0.82); backdrop-filter:blur(6px); border:0.5px solid rgba(255,255,255,0.15); border-radius:5px; padding:5px 9px; white-space:nowrap; pointer-events:none; display:inline-block; }
-  .stop-label .name  { font-size:11.5px; font-weight:600; color:#fff; line-height:1.3; }
-  .stop-label .sub   { font-size:9px; font-weight:300; color:rgba(255,255,255,0.5); margin-top:1px; }
-  .stop-label .day   { font-size:8.5px; color:rgba(255,255,255,0.28); margin-top:1px; }
+  .stop-label { font-family:'Inter', sans-serif; background:rgba(6,6,6,0.88); backdrop-filter:blur(6px); border:0.5px solid rgba(255,255,255,0.18); border-radius:6px; padding:7px 11px; white-space:nowrap; pointer-events:none; display:inline-block; }
+  .stop-label .name  { font-size:14px; font-weight:600; color:#fff; line-height:1.3; }
+  .stop-label .sub   { font-size:11px; font-weight:300; color:rgba(255,255,255,0.6); margin-top:2px; }
+  .stop-label .day   { font-size:10px; color:rgba(255,255,255,0.4); margin-top:2px; }
   .stop-label.summit .name { color:#7ecf7e; }
   .stop-label.summit .sub  { color:rgba(126,207,126,0.6); }
   .stop-label.beach .name  { color:#5bb8d0; }
@@ -156,9 +156,24 @@
 const map = L.map('map', { center:[31.05,-8.7], zoom:8, zoomControl:false, attributionControl:false });
 L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', { maxZoom:18 }).addTo(map);
 
-const legImlil = [[31.6295,-7.9811],[31.5200,-7.9600],[31.3800,-7.9650],[31.2300,-7.9450],[31.1358,-7.9191]];
-const legEssaouira = [[31.6295,-7.9811],[31.5800,-8.2500],[31.5000,-8.7000],[31.4500,-9.2000],[31.5085,-9.7595]];
-const legCoast = [[31.5085,-9.7595],[31.2500,-9.7800],[30.8420,-9.8180],[30.6000,-9.7000],[30.4278,-9.5981]];
+// R203 south to Imlil — winds through Tahannaout, Asni, Moulay Brahim gorge
+const legImlil = [
+  [31.6295,-7.9811],[31.5850,-7.9520],[31.5350,-7.9420],[31.4900,-7.9280],
+  [31.4420,-7.9180],[31.3620,-7.9280],[31.3140,-7.9420],[31.2680,-7.9280],
+  [31.2100,-7.9080],[31.1720,-7.9120],[31.1358,-7.9191]
+];
+// A7 / N8 highway Marrakech → Essaouira — curves SW via Chichaoua
+const legEssaouira = [
+  [31.6295,-7.9811],[31.6180,-8.0800],[31.5720,-8.2400],[31.5480,-8.4200],
+  [31.5450,-8.6800],[31.5620,-8.9200],[31.5480,-9.1600],[31.5180,-9.3800],
+  [31.4920,-9.5600],[31.5085,-9.7595]
+];
+// Coastal road N1/R301 Essaouira → Imsouane → Agadir — hugs cliffs, winds inland at points
+const legCoast = [
+  [31.5085,-9.7595],[31.4180,-9.7920],[31.3250,-9.7680],[31.2100,-9.7480],
+  [31.0850,-9.8020],[30.9420,-9.8280],[30.8420,-9.8180],[30.7250,-9.7580],
+  [30.6180,-9.7080],[30.5280,-9.6480],[30.4278,-9.5981]
+];
 
 L.polyline(legImlil, { color:'rgba(255,255,255,0.12)', weight:8, lineJoin:'round', lineCap:'round' }).addTo(map);
 L.polyline(legImlil, { color:'white', weight:2.5, opacity:0.95, lineJoin:'round', lineCap:'round' }).addTo(map);
@@ -170,8 +185,8 @@ L.polyline(legCoast, { color:'white', weight:2.5, opacity:0.95, lineJoin:'round'
 const stops = [
   { ll:[31.6295,-7.9811], name:'Marakeša',        sub:'Sākums',              day:'1. d.',      type:'main',   anchor:'top'    },
   { ll:[31.1358,-7.9191], name:'Imlila · Tubkals', sub:'Virsotne 4 167 m',    day:'2.–4. d.',   type:'summit', anchor:'right'  },
-  { ll:[31.5085,-9.7595], name:'Esauīra',          sub:'Atlantijas piekraste', day:'5.–7. d.',  type:'beach',  anchor:'bottom' },
-  { ll:[30.8420,-9.8180], name:'Imsouane',         sub:'Sērfošana',           day:'8. d.',      type:'surf',   anchor:'left'   },
+  { ll:[31.5085,-9.7595], name:'Esauīra',          sub:'Atlantijas piekraste', day:'5.–7. d.',  type:'beach',  anchor:'top'    },
+  { ll:[30.8420,-9.8180], name:'Imsouane',         sub:'Sērfošana',           day:'8. d.',      type:'surf',   anchor:'right'  },
   { ll:[30.4278,-9.5981], name:'Agadira',          sub:'Lidojums mājās',      day:'9. d.',      type:'beach',  anchor:'bottom' },
 ];
 
@@ -185,7 +200,7 @@ stops.forEach(s => {
   const r=7, iconSize=(r+5)*2;
   L.marker(s.ll, { icon:L.divIcon({ html:markerSVG(s.type), iconSize:[iconSize,iconSize], iconAnchor:[iconSize/2,iconSize/2], className:'' }), zIndexOffset:200 }).addTo(map);
   const labelHtml = `<div class="stop-label ${s.type}"><div class="name">${s.name}</div>${s.sub?`<div class="sub">${s.sub}</div>`:''}${s.day?`<div class="day">${s.day}</div>`:''}</div>`;
-  const anchorMap = { right:[-12,28], left:[12,28], top:[0,52], bottom:[-12,-14] };
+  const anchorMap = { right:[-20,20], left:[130,20], top:[0,58], bottom:[-20,-20] };
   L.marker(s.ll, { icon:L.divIcon({ html:labelHtml, iconAnchor:anchorMap[s.anchor]||[-12,28], className:'' }), interactive:false, zIndexOffset:100 }).addTo(map);
 });
 
