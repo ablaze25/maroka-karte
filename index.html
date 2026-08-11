@@ -43,6 +43,7 @@
   .itin-row .desc strong { font-weight:600; color:#fff; }
   .dot-summit { color:#7ecf7e; }
   .dot-beach { color:#5bb8d0; }
+  .dot-surf { color:#e07a9a; }
 
   #price-panel { bottom:clamp(12px,2vw,24px); right:clamp(12px,2vw,24px); padding:clamp(10px,1.4vw,14px) clamp(12px,1.6vw,18px); width:clamp(180px,23vw,250px); }
   #price-panel .price-header { border-bottom:0.5px solid rgba(255,255,255,0.08); padding-bottom:9px; margin-bottom:10px; }
@@ -69,6 +70,8 @@
   .stop-label.summit .sub  { color:rgba(126,207,126,0.6); }
   .stop-label.beach .name  { color:#5bb8d0; }
   .stop-label.beach .sub   { color:rgba(91,184,208,0.6); }
+  .stop-label.surf .name   { color:#e07a9a; }
+  .stop-label.surf .sub    { color:rgba(224,122,154,0.6); }
 
   .city-label { font-family:'Inter', sans-serif; font-size:10px; font-weight:500; letter-spacing:1px; color:rgba(255,255,255,0.55); text-transform:uppercase; white-space:nowrap; pointer-events:none; text-shadow:0 1px 3px rgba(0,0,0,0.9), 0 0 8px rgba(0,0,0,0.7); }
   .ocean-label { font-family:'Bebas Neue', sans-serif; font-size:16px; letter-spacing:4px; color:rgba(255,255,255,0.22); white-space:nowrap; pointer-events:none; text-shadow:0 1px 4px rgba(0,0,0,0.5); font-style:italic; }
@@ -102,7 +105,7 @@
 
 <div class="panel" id="title-block">
   <div class="country">MAROKA</div>
-  <div class="meta">7 dienas · ~600 km</div>
+  <div class="meta">9 dienas · ~550 km</div>
   <div class="tagline">Kalni & Pludmale</div>
 </div>
 
@@ -112,10 +115,11 @@
 
 <div class="panel" id="itinerary">
   <div class="panel-title">Maršruts</div>
-  <div class="itin-row"><div class="day-tag">1. d.</div><div class="desc"><strong>Marakeša</strong> — ierašanās, vakars medīnā</div></div>
-  <div class="itin-row"><div class="day-tag">2.–4. d.</div><div class="desc"><span class="dot-summit">▲</span> <strong>Imlila + Tubkals</strong> — aklimatizācija, bāzes nometne, virsotne 4 167 m <em>(+1 rezerves diena laikapstākļiem)</em></div></div>
-  <div class="itin-row"><div class="day-tag">5.–6. d.</div><div class="desc"><span class="dot-beach">●</span> <strong>Esauīra</strong> — Atlantijas piekraste, vēja pilsēta, medīna un osta</div></div>
-  <div class="itin-row"><div class="day-tag">7. d.</div><div class="desc"><strong>Marakeša</strong> — brīvs rīts, lidojumi mājās</div></div>
+  <div class="itin-row"><div class="day-tag">1. d.</div><div class="desc"><strong>Marakeša</strong> — ierašanās, vakars medīnā (Jemaa el-Fnaa)</div></div>
+  <div class="itin-row"><div class="day-tag">2.–4. d.</div><div class="desc"><span class="dot-summit">▲</span> <strong>Imlila + Tubkals</strong> — aklimatizācija, bāzes nometne (~3200 m), virsotne 4 167 m <em>(+1 rezerves diena laikapstākļiem)</em></div></div>
+  <div class="itin-row"><div class="day-tag">5.–7. d.</div><div class="desc"><span class="dot-beach">●</span> <strong>Esauīra</strong> — Atlantijas piekraste, vēja pilsēta, medīna un osta</div></div>
+  <div class="itin-row"><div class="day-tag">8. d.</div><div class="desc"><span class="dot-surf">◈</span> <strong>Imsouane + Agadira</strong> — sērfošana, garākais vilnis Āfrikā</div></div>
+  <div class="itin-row"><div class="day-tag">9. d.</div><div class="desc"><strong>Agadira</strong> — lidojums mājās uz Latviju</div></div>
 </div>
 
 <div class="panel" id="price-panel">
@@ -149,25 +153,30 @@
 </div>
 
 <script>
-const map = L.map('map', { center:[31.4,-8.6], zoom:8, zoomControl:false, attributionControl:false });
+const map = L.map('map', { center:[31.05,-8.7], zoom:8, zoomControl:false, attributionControl:false });
 L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', { maxZoom:18 }).addTo(map);
 
 const legImlil = [[31.6295,-7.9811],[31.5200,-7.9600],[31.3800,-7.9650],[31.2300,-7.9450],[31.1358,-7.9191]];
 const legEssaouira = [[31.6295,-7.9811],[31.5800,-8.2500],[31.5000,-8.7000],[31.4500,-9.2000],[31.5085,-9.7595]];
+const legCoast = [[31.5085,-9.7595],[31.2500,-9.7800],[30.8420,-9.8180],[30.6000,-9.7000],[30.4278,-9.5981]];
 
 L.polyline(legImlil, { color:'rgba(255,255,255,0.12)', weight:8, lineJoin:'round', lineCap:'round' }).addTo(map);
 L.polyline(legImlil, { color:'white', weight:2.5, opacity:0.95, lineJoin:'round', lineCap:'round' }).addTo(map);
 L.polyline(legEssaouira, { color:'rgba(255,255,255,0.12)', weight:8, lineJoin:'round', lineCap:'round' }).addTo(map);
 L.polyline(legEssaouira, { color:'white', weight:2.5, opacity:0.95, lineJoin:'round', lineCap:'round' }).addTo(map);
+L.polyline(legCoast, { color:'rgba(255,255,255,0.12)', weight:8, lineJoin:'round', lineCap:'round' }).addTo(map);
+L.polyline(legCoast, { color:'white', weight:2.5, opacity:0.95, lineJoin:'round', lineCap:'round' }).addTo(map);
 
 const stops = [
-  { ll:[31.6295,-7.9811], name:'Marakeša',        sub:'Sākums / Beigas',      day:'1. · 7. d.', type:'main',   anchor:'top'    },
+  { ll:[31.6295,-7.9811], name:'Marakeša',        sub:'Sākums',              day:'1. d.',      type:'main',   anchor:'top'    },
   { ll:[31.1358,-7.9191], name:'Imlila · Tubkals', sub:'Virsotne 4 167 m',    day:'2.–4. d.',   type:'summit', anchor:'right'  },
-  { ll:[31.5085,-9.7595], name:'Esauīra',          sub:'Atlantijas piekraste', day:'5.–6. d.',  type:'beach',  anchor:'bottom' },
+  { ll:[31.5085,-9.7595], name:'Esauīra',          sub:'Atlantijas piekraste', day:'5.–7. d.',  type:'beach',  anchor:'bottom' },
+  { ll:[30.8420,-9.8180], name:'Imsouane',         sub:'Sērfošana',           day:'8. d.',      type:'surf',   anchor:'left'   },
+  { ll:[30.4278,-9.5981], name:'Agadira',          sub:'Lidojums mājās',      day:'9. d.',      type:'beach',  anchor:'bottom' },
 ];
 
 function markerSVG(type) {
-  const cfg = { main:{ r:7, ring:'#ffffff', dot:'#ffffff' }, summit:{ r:7, ring:'#7ecf7e', dot:'#7ecf7e' }, beach:{ r:7, ring:'#5bb8d0', dot:'#5bb8d0' } };
+  const cfg = { main:{ r:7, ring:'#ffffff', dot:'#ffffff' }, summit:{ r:7, ring:'#7ecf7e', dot:'#7ecf7e' }, beach:{ r:7, ring:'#5bb8d0', dot:'#5bb8d0' }, surf:{ r:7, ring:'#e07a9a', dot:'#e07a9a' } };
   const c = cfg[type] || cfg.main; const s = (c.r+5)*2, cx = s/2;
   return `<svg xmlns="http://www.w3.org/2000/svg" width="${s}" height="${s}"><circle cx="${cx}" cy="${cx}" r="${c.r+2}" fill="none" stroke="${c.ring}" stroke-width="1.5" opacity="0.25"/><circle cx="${cx}" cy="${cx}" r="${c.r}" fill="none" stroke="${c.ring}" stroke-width="2"/><circle cx="${cx}" cy="${cx}" r="${c.r-3.5}" fill="${c.dot}"/></svg>`;
 }
@@ -184,7 +193,6 @@ const cities = [
   { ll:[33.5731,-7.5898], name:'Kasablanka' },
   { ll:[33.9716,-6.8498], name:'Rabata'     },
   { ll:[32.2994,-9.2372], name:'Safi'       },
-  { ll:[30.4278,-9.5981], name:'Agadira'    },
   { ll:[33.2560,-8.5040], name:'El Džadida' },
   { ll:[31.0470,-7.1319], name:'Ait Benhadu' },
 ];
